@@ -28,17 +28,9 @@ async def load():
 @bot.tree.command(name = "reload") 
 async def reload(interaction: discord.Interaction):
     for filename in os.listdir('./cogs'):
-        bot.reload_extension(f"cogs.{filename[:-3]}")
-        await interaction.response.send_message(f"Reloaded {filename[:-3]}!")
-
-@bot.tree.command(name = "hello")
-async def hello(interaction: discord.Interaction):
-    await interaction.response.send_message(f"Hey! {interaction.user.mention}! This is a slash command!", ephemeral=True)
-
-@bot.tree.command(name = "say")
-@app_commands.describe(arg = "What should I say?")
-async def say(interaction: discord.Interaction, arg: str):
-    await interaction.response.send_message(f"{interaction.user.name} said: '{arg}'")
+        if filename.endswith('.py'):
+            await bot.reload_extension(f"cogs.{filename[:-3]}")
+            await interaction.response.send_message(f"Reloaded {filename[:-3]}!")
 
 @bot.tree.command(name = "toggle")
 async def toggle(interaction: discord.Interaction):
